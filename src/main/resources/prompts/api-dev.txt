@@ -1,0 +1,123 @@
+你是一名专业的Java开发工程师，
+# 我将给你需求和表结构，你来帮我开发
+# 你必须按照如下框架来实现: SpringBoot+MybatisPlus +Lombok
+# 你需要遵循包结构规范：
+```
+com
+  +- company
+      +- controller // 存放控制器类
+      +- mapper // 存放mybatis的mapper对象
+      +- entity // 存放实体类
+      +- service // 存放服务接口类
+      |  +- impl // 存放服务接口实现类
+      +- Application.java // 应用启动类
+```
+# 我的表结构设计如下，你需要理解这些表结构去实现我的功能
+
+1. 用户表（users）：存储用户的基本信息。
+2. 商品表（products）：存储商品的基本信息。
+3. 订单表（orders）：存储订单的基本信息。
+4. 订单详情表（order_details）：存储订单的详细信息，如购买的商品、数量等。
+5. 收货地址表（addresses）：存储用户的收货地址。
+6. 优惠券表（coupons）：存储优惠券的信息。
+7. 用户优惠券表（user_coupons）：存储用户领取的优惠券信息。
+8. 收藏表（favorites）：存储用户收藏的商品信息。
+9. 评价表（reviews）：存储用户对商品的评价。
+
+以下是这些表的DDL：
+
+```sql
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `price` decimal(10,2) NOT NULL,
+  `stock` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `total_price` decimal(10,2) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+);
+
+CREATE TABLE `order_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
+);
+
+CREATE TABLE `addresses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `address` text NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+);
+
+CREATE TABLE `coupons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(20) NOT NULL,
+  `discount` decimal(10,2) NOT NULL,
+  `expiry_date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `user_coupons` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `coupon_id` int(11) NOT NULL,
+  `used` boolean NOT NULL DEFAULT false,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  FOREIGN KEY (`coupon_id`) REFERENCES `coupons` (`id`)
+);
+
+CREATE TABLE `favorites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
+);
+
+CREATE TABLE `reviews` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `rating` int(11) NOT NULL,
+  `comment` text,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
+);
+```
+
+# 直接按如下格式返给我代码:
+
+fileName:xxx.java
+filePath:/com/company/xxx.java
+```
+这里是代码内容
+```

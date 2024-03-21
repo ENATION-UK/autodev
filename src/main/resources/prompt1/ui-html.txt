@@ -1,0 +1,88 @@
+UI前端实现代码如下
+```
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Article Details Page</title>
+  <script src="https://registry.npmmirror.com/vue/3.3.11/files/dist/vue.global.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="bg-gray-100 p-8">
+    <div class="max-w-6xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+      <div class="md:flex">
+        <div class="w-full p-8">
+          <div class="mb-4">
+            <h1 class="text-3xl font-bold text-gray-800 mb-3">{{ article.title }}</h1>
+            <p class="text-sm text-gray-600">{{ article.author }}</p>
+          </div>
+          <div class="mb-6">
+            <p class="text-gray-700 text-base whitespace-pre-line">{{ article.content }}</p>
+          </div>
+          <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">Comments</h2>
+            <div v-for="comment in article.comments" :key="comment.id" class="mb-4">
+              <div class="flex items-center mb-2">
+                <img :src="comment.avatar" alt="Avatar of the commenter" class="w-10 h-10 rounded-full mr-3">
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-800">{{ comment.name }}</h3>
+                  <p class="text-sm text-gray-600">{{ comment.date }}</p>
+                </div>
+              </div>
+              <p class="text-gray-700">{{ comment.text }}</p>
+            </div>
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-3">Leave a Comment</h2>
+            <form>
+              <textarea class="w-full p-4 text-gray-800 rounded-lg focus:outline-none focus:shadow-outline" rows="4" placeholder="Type your comment..."></textarea>
+              <button type="submit" class="mt-4 px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 focus:outline-none focus:shadow-outline">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { createApp, ref } = Vue
+    createApp({
+      setup() {
+        const article = ref({
+          title: 'The Blog Article Details Page',
+          author: 'By Author',
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.`,
+          comments: [
+            {
+              id: 1,
+              name: 'John Doe',
+              date: 'April 5, 2023',
+              text: 'This is a sample comment.',
+              avatar: 'https://placehold.co/100x100'
+            },
+            {
+              id: 2,
+              name: 'Jane Smith',
+              date: 'April 6, 2023',
+              text: 'Another insightful comment.',
+              avatar: 'https://placehold.co/100x100'
+            }
+          ]
+        })
+        return {
+          article
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>
+```

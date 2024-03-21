@@ -1,0 +1,28 @@
+需要对代码做出的改动如下:
+1. **修改Vue应用**：在`setup`方法中添加一个方法来从后端获取文章详情。
+
+```javascript
+async function fetchArticle() {
+  const response = await fetch('/api/articles/1'); // 假设文章ID为1
+  const data = await response.json();
+  article.value = data;
+}
+```
+
+2. **在`mounted`生命周期钩子中调用这个方法**：
+
+```javascript
+import { onMounted } from 'vue';
+
+createApp({
+  setup() {
+    const article = ref(null);
+    onMounted(async () => {
+      await fetchArticle();
+    });
+    return {
+      article
+    }
+  }
+}).mount('#app')
+```

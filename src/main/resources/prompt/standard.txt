@@ -1,0 +1,14 @@
+1. 基本框架:maven+SpringBoot+MybatisPlus
+2. 包结构规范：
+```
+com
+  +- example
+    +- blog
+      +- controller // 存放控制器类
+      +- mapper // 存放mybatis的mapper对象
+      +- entity // 存放实体类
+      +- service // 存放服务接口类
+      |  +- impl // 存放服务接口实现类
+      +- Application.java // 应用启动类
+```
+3. 项目的跟目录为:/workspace/project
