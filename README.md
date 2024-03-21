@@ -1,28 +1,28 @@
 # autodev
 
-#### 介绍
-通过AI完成自动编码
-##编排各个大模型到具体的开发流程
+#### Introduction
+Automated coding through AI
+## Orchestrating various large models into specific development processes
 
-- autodev自动完成一下工作：
+- Autodev automatically completes the following tasks:
 
-- 需求分析
+- Requirement analysis
 
-- UI设计
+- UI design
 
-- 数据库建模
+- Database modeling
 
-- ui开发
+- UI development
 
-- api开发
+- API development
 
-- 部署
+- Deployment
 
-- run & debug
+- Run & debug
 
 - Bug fix & run
 
-## 总体架构
+## Overall architecture
 
 ![12.jpg](assets/1.jpg)
 
