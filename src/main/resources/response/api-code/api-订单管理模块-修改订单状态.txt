@@ -1,0 +1,28 @@
+```json
+[
+  {
+    "fileName": "OrderController.java",
+    "filePath": "/com/company/controller/OrderController.java",
+    "fileDesc": "订单控制器类，处理修改订单状态的请求",
+    "fileContent": "package com.company.controller;\n\nimport com.company.service.OrderService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.PutMapping;\nimport org.springframework.web.bind.annotation.PathVariable;\nimport org.springframework.web.bind.annotation.RequestBody;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RestController;\n\n@RestController\n@RequestMapping(\"/order\")\npublic class OrderController {\n\n    @Autowired\n    private OrderService orderService;\n\n    @PutMapping(\"/updateStatus/{orderId}\")\n    public String updateOrderStatus(@PathVariable Integer orderId, @RequestBody String status) {\n        return orderService.updateOrderStatus(orderId, status);\n    }\n}"
+  },
+  {
+    "fileName": "OrderService.java",
+    "filePath": "/com/company/service/OrderService.java",
+    "fileDesc": "订单服务接口类，定义修改订单状态的服务接口",
+    "fileContent": "package com.company.service;\n\npublic interface OrderService {\n    String updateOrderStatus(Integer orderId, String status);\n}"
+  },
+  {
+    "fileName": "OrderServiceImpl.java",
+    "filePath": "/com/company/service/impl/OrderServiceImpl.java",
+    "fileDesc": "订单服务接口实现类，实现修改订单状态的服务接口",
+    "fileContent": "package com.company.service.impl;\n\nimport com.company.mapper.OrderMapper;\nimport com.company.service.OrderService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\nimport org.springframework.transaction.annotation.Transactional;\n\n@Service\npublic class OrderServiceImpl implements OrderService {\n\n    @Autowired\n    private OrderMapper orderMapper;\n\n    @Override\n    @Transactional\n    public String updateOrderStatus(Integer orderId, String status) {\n        int result = orderMapper.updateOrderStatus(orderId, status);\n        if (result > 0) {\n            return \"Order status updated successfully.\";\n        } else {\n            return \"Failed to update order status.\";\n        }\n    }\n}"
+  },
+  {
+    "fileName": "OrderMapper.java",
+    "filePath": "/com/company/mapper/OrderMapper.java",
+    "fileDesc": "订单Mapper类，用于修改订单状态的数据库操作",
+    "fileContent": "package com.company.mapper;\n\nimport org.apache.ibatis.annotations.Mapper;\nimport org.apache.ibatis.annotations.Param;\nimport org.apache.ibatis.annotations.Update;\n\n@Mapper\npublic interface OrderMapper {\n\n    @Update(\"UPDATE orders SET status = #{status} WHERE id = #{orderId}\")\n    int updateOrderStatus(@Param(\"orderId\") Integer orderId, @Param(\"status\") String status);\n}"
+  }
+]
+```

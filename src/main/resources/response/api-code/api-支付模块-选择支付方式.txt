@@ -1,0 +1,22 @@
+```json
+[
+  {
+    "fileName": "PaymentController.java",
+    "filePath": "/com/company/controller/PaymentController.java",
+    "fileDesc": "处理支付相关的请求，如选择支付方式、支付订单等",
+    "fileContent": "package com.company.controller;\n\nimport com.company.service.PaymentService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.PostMapping;\nimport org.springframework.web.bind.annotation.RequestBody;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RestController;\n\n@RestController\n@RequestMapping(\"/payment\")\npublic class PaymentController {\n\n    @Autowired\n    private PaymentService paymentService;\n\n    @PostMapping(\"/choosePaymentMethod\")\n    public String choosePaymentMethod(@RequestBody String paymentMethod) {\n        return paymentService.choosePaymentMethod(paymentMethod);\n    }\n}"
+  },
+  {
+    "fileName": "PaymentService.java",
+    "filePath": "/com/company/service/PaymentService.java",
+    "fileDesc": "定义支付相关的服务接口",
+    "fileContent": "package com.company.service;\n\npublic interface PaymentService {\n    String choosePaymentMethod(String paymentMethod);\n}"
+  },
+  {
+    "fileName": "PaymentServiceImpl.java",
+    "filePath": "/com/company/service/impl/PaymentServiceImpl.java",
+    "fileDesc": "实现支付相关的服务接口",
+    "fileContent": "package com.company.service.impl;\n\nimport com.company.service.PaymentService;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class PaymentServiceImpl implements PaymentService {\n\n    @Override\n    public String choosePaymentMethod(String paymentMethod) {\n        // Here you would implement the logic to handle the payment method choice\n        // This is a simplified example\n        return \"Payment method \" + paymentMethod + \" selected successfully.\";\n    }\n}"
+  }
+]
+```

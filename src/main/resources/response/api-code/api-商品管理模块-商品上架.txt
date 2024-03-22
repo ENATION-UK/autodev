@@ -1,0 +1,34 @@
+```json
+[
+  {
+    "fileName": "ProductController.java",
+    "filePath": "/com/company/controller/ProductController.java",
+    "fileDesc": "商品控制器类，处理商品上架请求",
+    "fileContent": "package com.company.controller;\n\nimport com.company.entity.ProductEntity;\nimport com.company.service.ProductService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.PostMapping;\nimport org.springframework.web.bind.annotation.RequestBody;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RestController;\n\n@RestController\n@RequestMapping(\"/product\")\npublic class ProductController {\n\n    @Autowired\n    private ProductService productService;\n\n    @PostMapping(\"/add\")\n    public String addProduct(@RequestBody ProductEntity product) {\n        productService.addProduct(product);\n        return \"Product added successfully!\";\n    }\n}"
+  },
+  {
+    "fileName": "ProductService.java",
+    "filePath": "/com/company/service/ProductService.java",
+    "fileDesc": "商品服务接口类，定义商品上架的服务接口",
+    "fileContent": "package com.company.service;\n\nimport com.company.entity.ProductEntity;\n\npublic interface ProductService {\n    void addProduct(ProductEntity product);\n}"
+  },
+  {
+    "fileName": "ProductServiceImpl.java",
+    "filePath": "/com/company/service/impl/ProductServiceImpl.java",
+    "fileDesc": "商品服务接口实现类，实现商品上架的服务接口",
+    "fileContent": "package com.company.service.impl;\n\nimport com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;\nimport com.company.entity.ProductEntity;\nimport com.company.mapper.ProductMapper;\nimport com.company.service.ProductService;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class ProductServiceImpl extends ServiceImpl<ProductMapper, ProductEntity> implements ProductService {\n\n    @Override\n    public void addProduct(ProductEntity product) {\n        this.save(product);\n    }\n}"
+  },
+  {
+    "fileName": "ProductMapper.java",
+    "filePath": "/com/company/mapper/ProductMapper.java",
+    "fileDesc": "商品Mapper类，用于数据库操作",
+    "fileContent": "package com.company.mapper;\n\nimport com.baomidou.mybatisplus.core.mapper.BaseMapper;\nimport com.company.entity.ProductEntity;\n\npublic interface ProductMapper extends BaseMapper<ProductEntity> {\n}"
+  },
+  {
+    "fileName": "ProductEntity.java",
+    "filePath": "/com/company/entity/ProductEntity.java",
+    "fileDesc": "商品实体类，定义商品的属性和方法",
+    "fileContent": "package com.company.entity;\n\nimport lombok.Data;\nimport java.math.BigDecimal;\n\n@Data\npublic class ProductEntity {\n    private Integer id;\n    private String name;\n    private String description;\n    private BigDecimal price;\n    private Integer stock;\n}"
+  }
+]
+```

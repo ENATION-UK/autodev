@@ -1,0 +1,28 @@
+```json
+[
+  {
+    "fileName": "PaymentController.java",
+    "filePath": "/com/company/controller/PaymentController.java",
+    "fileDesc": "处理支付状态查询的请求",
+    "fileContent": "package com.company.controller;\n\nimport com.company.service.PaymentService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.GetMapping;\nimport org.springframework.web.bind.annotation.PathVariable;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RestController;\n\n@RestController\n@RequestMapping(\"/payment\")\npublic class PaymentController {\n\n    @Autowired\n    private PaymentService paymentService;\n\n    @GetMapping(\"/status/{orderId}\")\n    public String checkPaymentStatus(@PathVariable(\"orderId\") Long orderId) {\n        return paymentService.checkPaymentStatus(orderId);\n    }\n}"
+  },
+  {
+    "fileName": "PaymentService.java",
+    "filePath": "/com/company/service/PaymentService.java",
+    "fileDesc": "定义支付状态查询的服务接口",
+    "fileContent": "package com.company.service;\n\npublic interface PaymentService {\n    String checkPaymentStatus(Long orderId);\n}"
+  },
+  {
+    "fileName": "PaymentServiceImpl.java",
+    "filePath": "/com/company/service/impl/PaymentServiceImpl.java",
+    "fileDesc": "实现支付状态查询的服务",
+    "fileContent": "package com.company.service.impl;\n\nimport com.company.mapper.PaymentMapper;\nimport com.company.service.PaymentService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class PaymentServiceImpl implements PaymentService {\n\n    @Autowired\n    private PaymentMapper paymentMapper;\n\n    @Override\n    public String checkPaymentStatus(Long orderId) {\n        return paymentMapper.findPaymentStatusByOrderId(orderId);\n    }\n}"
+  },
+  {
+    "fileName": "PaymentMapper.java",
+    "filePath": "/com/company/mapper/PaymentMapper.java",
+    "fileDesc": "支付状态查询的数据库操作",
+    "fileContent": "package com.company.mapper;\n\nimport org.apache.ibatis.annotations.Mapper;\nimport org.apache.ibatis.annotations.Select;\n\n@Mapper\npublic interface PaymentMapper {\n\n    @Select(\"SELECT status FROM orders WHERE id = #{orderId}\")\n    String findPaymentStatusByOrderId(Long orderId);\n}"
+  }
+]
+```

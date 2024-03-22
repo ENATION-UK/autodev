@@ -1,0 +1,28 @@
+```json
+[
+  {
+    "fileName": "ProductController.java",
+    "filePath": "/com/company/controller/ProductController.java",
+    "fileDesc": "商品控制器类，处理查看商品销售情况的请求",
+    "fileContent": "package com.company.controller;\n\nimport com.company.service.ProductService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.GetMapping;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RestController;\nimport java.util.List;\n\n@RestController\n@RequestMapping(\"/product\")\npublic class ProductController {\n\n    @Autowired\n    private ProductService productService;\n\n    @GetMapping(\"/sales\")\n    public List<?> viewProductSales() {\n        return productService.viewProductSales();\n    }\n}"
+  },
+  {
+    "fileName": "ProductService.java",
+    "filePath": "/com/company/service/ProductService.java",
+    "fileDesc": "商品服务接口类，定义查看商品销售情况的服务接口",
+    "fileContent": "package com.company.service;\n\nimport java.util.List;\n\npublic interface ProductService {\n    List<?> viewProductSales();\n}"
+  },
+  {
+    "fileName": "ProductServiceImpl.java",
+    "filePath": "/com/company/service/impl/ProductServiceImpl.java",
+    "fileDesc": "商品服务接口实现类，实现查看商品销售情况的服务接口",
+    "fileContent": "package com.company.service.impl;\n\nimport com.company.mapper.ProductMapper;\nimport com.company.service.ProductService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\nimport java.util.List;\n\n@Service\npublic class ProductServiceImpl implements ProductService {\n\n    @Autowired\n    private ProductMapper productMapper;\n\n    @Override\n    public List<?> viewProductSales() {\n        return productMapper.viewProductSales();\n    }\n}"
+  },
+  {
+    "fileName": "ProductMapper.java",
+    "filePath": "/com/company/mapper/ProductMapper.java",
+    "fileDesc": "商品Mapper类，用于数据库操作，包括查看商品销售情况",
+    "fileContent": "package com.company.mapper;\n\nimport org.apache.ibatis.annotations.Mapper;\nimport org.apache.ibatis.annotations.Select;\nimport java.util.List;\n\n@Mapper\npublic interface ProductMapper {\n\n    @Select(\"SELECT p.name, SUM(od.quantity) AS total_sales FROM products p JOIN order_details od ON p.id = od.product_id GROUP BY p.id\")\n    List<?> viewProductSales();\n}"
+  }
+]
+```

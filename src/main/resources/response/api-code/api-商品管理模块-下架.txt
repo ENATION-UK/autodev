@@ -1,0 +1,28 @@
+```json
+[
+  {
+    "fileName": "ProductController.java",
+    "filePath": "/com/company/controller/ProductController.java",
+    "fileDesc": "商品控制器类，处理商品下架的请求",
+    "fileContent": "package com.company.controller;\n\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.PutMapping;\nimport org.springframework.web.bind.annotation.PathVariable;\nimport org.springframework.web.bind.annotation.RestController;\nimport com.company.service.ProductService;\n\n@RestController\npublic class ProductController {\n\n    @Autowired\n    private ProductService productService;\n\n    @PutMapping(\"/product/{id}/unlist\")\n    public String unlistProduct(@PathVariable Integer id) {\n        return productService.unlistProduct(id);\n    }\n}"
+  },
+  {
+    "fileName": "ProductService.java",
+    "filePath": "/com/company/service/ProductService.java",
+    "fileDesc": "商品服务接口类，定义商品下架的服务接口",
+    "fileContent": "package com.company.service;\n\npublic interface ProductService {\n    String unlistProduct(Integer id);\n}"
+  },
+  {
+    "fileName": "ProductServiceImpl.java",
+    "filePath": "/com/company/service/impl/ProductServiceImpl.java",
+    "fileDesc": "商品服务接口实现类，实现商品下架的服务接口",
+    "fileContent": "package com.company.service.impl;\n\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\nimport com.company.mapper.ProductMapper;\nimport com.company.service.ProductService;\n\n@Service\npublic class ProductServiceImpl implements ProductService {\n\n    @Autowired\n    private ProductMapper productMapper;\n\n    @Override\n    public String unlistProduct(Integer id) {\n        int result = productMapper.unlistProduct(id);\n        if (result == 1) {\n            return \"Product successfully unlisted.\";\n        } else {\n            return \"Failed to unlist product.\";\n        }\n    }\n}"
+  },
+  {
+    "fileName": "ProductMapper.java",
+    "filePath": "/com/company/mapper/ProductMapper.java",
+    "fileDesc": "商品Mapper类，用于数据库操作，包括商品下架的操作",
+    "fileContent": "package com.company.mapper;\n\nimport org.apache.ibatis.annotations.Mapper;\nimport org.apache.ibatis.annotations.Update;\n\n@Mapper\npublic interface ProductMapper {\n\n    @Update(\"UPDATE products SET stock = 0 WHERE id = #{id}\")\n    int unlistProduct(Integer id);\n}"
+  }
+]
+```

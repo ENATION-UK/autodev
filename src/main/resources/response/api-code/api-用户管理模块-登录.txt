@@ -1,0 +1,34 @@
+```json
+[
+  {
+    "fileName": "UserController.java",
+    "filePath": "/com/company/controller/UserController.java",
+    "fileDesc": "用户控制器类，处理用户登录请求",
+    "fileContent": "package com.company.controller;\n\nimport com.company.entity.UserEntity;\nimport com.company.service.UserService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.PostMapping;\nimport org.springframework.web.bind.annotation.RequestBody;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RestController;\n\n@RestController\n@RequestMapping(\"/user\")\npublic class UserController {\n\n    @Autowired\n    private UserService userService;\n\n    @PostMapping(\"/login\")\n    public String login(@RequestBody UserEntity user) {\n        return userService.login(user.getUsername(), user.getPassword());\n    }\n}"
+  },
+  {
+    "fileName": "UserService.java",
+    "filePath": "/com/company/service/UserService.java",
+    "fileDesc": "用户服务接口类，定义用户登录的服务接口",
+    "fileContent": "package com.company.service;\n\npublic interface UserService {\n    String login(String username, String password);\n}"
+  },
+  {
+    "fileName": "UserServiceImpl.java",
+    "filePath": "/com/company/service/impl/UserServiceImpl.java",
+    "fileDesc": "用户服务接口实现类，实现用户登录的服务接口",
+    "fileContent": "package com.company.service.impl;\n\nimport com.company.mapper.UserMapper;\nimport com.company.service.UserService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class UserServiceImpl implements UserService {\n\n    @Autowired\n    private UserMapper userMapper;\n\n    @Override\n    public String login(String username, String password) {\n        UserEntity user = userMapper.findByUsernameAndPassword(username, password);\n        if (user != null) {\n            return \"Login successful\";\n        } else {\n            return \"Invalid username or password\";\n        }\n    }\n}"
+  },
+  {
+    "fileName": "UserMapper.java",
+    "filePath": "/com/company/mapper/UserMapper.java",
+    "fileDesc": "用户Mapper类，用于数据库操作，包括用户登录验证",
+    "fileContent": "package com.company.mapper;\n\nimport com.baomidou.mybatisplus.core.mapper.BaseMapper;\nimport com.company.entity.UserEntity;\nimport org.apache.ibatis.annotations.Mapper;\nimport org.apache.ibatis.annotations.Param;\nimport org.apache.ibatis.annotations.Select;\n\n@Mapper\npublic interface UserMapper extends BaseMapper<UserEntity> {\n\n    @Select(\"SELECT * FROM users WHERE username = #{username} AND password = #{password}\")\n    UserEntity findByUsernameAndPassword(@Param(\"username\") String username, @Param(\"password\") String password);\n}"
+  },
+  {
+    "fileName": "UserEntity.java",
+    "filePath": "/com/company/entity/UserEntity.java",
+    "fileDesc": "用户实体类，定义用户的属性和方法，用于登录功能",
+    "fileContent": "package com.company.entity;\n\nimport lombok.Data;\n\n@Data\npublic class UserEntity {\n    private Integer id;\n    private String username;\n    private String password;\n    private String email;\n    private String phone;\n}"
+  }
+]
+```

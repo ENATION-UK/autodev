@@ -1,0 +1,34 @@
+```json
+[
+  {
+    "fileName": "OrderController.java",
+    "filePath": "/com/company/controller/OrderController.java",
+    "fileDesc": "订单控制器类，处理查看订单详情的请求",
+    "fileContent": "package com.company.controller;\n\nimport com.company.entity.OrderEntity;\nimport com.company.service.OrderService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.GetMapping;\nimport org.springframework.web.bind.annotation.PathVariable;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RestController;\n\n@RestController\n@RequestMapping(\"/order\")\npublic class OrderController {\n\n    @Autowired\n    private OrderService orderService;\n\n    @GetMapping(\"/detail/{orderId}\")\n    public OrderEntity getOrderDetail(@PathVariable Integer orderId) {\n        return orderService.getOrderDetailById(orderId);\n    }\n}"
+  },
+  {
+    "fileName": "OrderService.java",
+    "filePath": "/com/company/service/OrderService.java",
+    "fileDesc": "订单服务接口类，定义查看订单详情的服务接口",
+    "fileContent": "package com.company.service;\n\nimport com.company.entity.OrderEntity;\n\npublic interface OrderService {\n    OrderEntity getOrderDetailById(Integer orderId);\n}"
+  },
+  {
+    "fileName": "OrderServiceImpl.java",
+    "filePath": "/com/company/service/impl/OrderServiceImpl.java",
+    "fileDesc": "订单服务接口实现类，实现查看订单详情的服务接口",
+    "fileContent": "package com.company.service.impl;\n\nimport com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;\nimport com.company.entity.OrderEntity;\nimport com.company.mapper.OrderMapper;\nimport com.company.service.OrderService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class OrderServiceImpl implements OrderService {\n\n    @Autowired\n    private OrderMapper orderMapper;\n\n    @Override\n    public OrderEntity getOrderDetailById(Integer orderId) {\n        return orderMapper.selectById(orderId);\n    }\n}"
+  },
+  {
+    "fileName": "OrderMapper.java",
+    "filePath": "/com/company/mapper/OrderMapper.java",
+    "fileDesc": "订单Mapper类，用于数据库操作，包括查看订单详情",
+    "fileContent": "package com.company.mapper;\n\nimport com.baomidou.mybatisplus.core.mapper.BaseMapper;\nimport com.company.entity.OrderEntity;\nimport org.apache.ibatis.annotations.Mapper;\n\n@Mapper\npublic interface OrderMapper extends BaseMapper<OrderEntity> {\n}"
+  },
+  {
+    "fileName": "OrderEntity.java",
+    "filePath": "/com/company/entity/OrderEntity.java",
+    "fileDesc": "订单实体类，定义订单的属性和方法",
+    "fileContent": "package com.company.entity;\n\nimport lombok.Data;\nimport java.math.BigDecimal;\nimport java.time.LocalDateTime;\n\n@Data\npublic class OrderEntity {\n    private Integer id;\n    private Integer userId;\n    private BigDecimal totalPrice;\n    private String status;\n    private LocalDateTime createdAt;\n    private LocalDateTime updatedAt;\n}"
+  }
+]
+```

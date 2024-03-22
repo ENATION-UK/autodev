@@ -1,0 +1,34 @@
+```json
+[
+  {
+    "fileName": "OrderController.java",
+    "filePath": "/com/company/controller/OrderController.java",
+    "fileDesc": "处理订单相关的请求，如查看订单状态",
+    "fileContent": "package com.company.controller;\n\nimport com.company.entity.Order;\nimport com.company.service.OrderService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.web.bind.annotation.GetMapping;\nimport org.springframework.web.bind.annotation.PathVariable;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RestController;\n\n@RestController\n@RequestMapping(\"/order\")\npublic class OrderController {\n\n    @Autowired\n    private OrderService orderService;\n\n    @GetMapping(\"/status/{orderId}\")\n    public Order getOrderStatus(@PathVariable Integer orderId) {\n        return orderService.getOrderStatus(orderId);\n    }\n}"
+  },
+  {
+    "fileName": "OrderService.java",
+    "filePath": "/com/company/service/OrderService.java",
+    "fileDesc": "定义订单相关的服务接口，如获取订单状态",
+    "fileContent": "package com.company.service;\n\nimport com.company.entity.Order;\n\npublic interface OrderService {\n    Order getOrderStatus(Integer orderId);\n}"
+  },
+  {
+    "fileName": "OrderServiceImpl.java",
+    "filePath": "/com/company/service/impl/OrderServiceImpl.java",
+    "fileDesc": "实现订单相关的服务接口，如获取订单状态",
+    "fileContent": "package com.company.service.impl;\n\nimport com.company.entity.Order;\nimport com.company.mapper.OrderMapper;\nimport com.company.service.OrderService;\nimport org.springframework.beans.factory.annotation.Autowired;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class OrderServiceImpl implements OrderService {\n\n    @Autowired\n    private OrderMapper orderMapper;\n\n    @Override\n    public Order getOrderStatus(Integer orderId) {\n        return orderMapper.selectById(orderId);\n    }\n}"
+  },
+  {
+    "fileName": "OrderMapper.java",
+    "filePath": "/com/company/mapper/OrderMapper.java",
+    "fileDesc": "订单Mapper类，用于数据库操作，如查询订单状态",
+    "fileContent": "package com.company.mapper;\n\nimport com.baomidou.mybatisplus.core.mapper.BaseMapper;\nimport com.company.entity.Order;\nimport org.apache.ibatis.annotations.Mapper;\n\n@Mapper\npublic interface OrderMapper extends BaseMapper<Order> {\n}"
+  },
+  {
+    "fileName": "Order.java",
+    "filePath": "/com/company/entity/Order.java",
+    "fileDesc": "订单实体类，定义订单的属性和方法",
+    "fileContent": "package com.company.entity;\n\nimport lombok.Data;\nimport java.math.BigDecimal;\nimport java.time.LocalDateTime;\n\n@Data\npublic class Order {\n    private Integer id;\n    private Integer userId;\n    private BigDecimal totalPrice;\n    private String status;\n    private LocalDateTime createdAt;\n    private LocalDateTime updatedAt;\n}"
+  }
+]
+```
