@@ -15,5 +15,6 @@ public class DatabaseStructure {
 
     private String moduleName;
     private String ddl;
+    private String description;
 
 }

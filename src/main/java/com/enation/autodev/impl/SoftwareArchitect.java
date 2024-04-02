@@ -38,6 +38,7 @@ public class SoftwareArchitect extends AIWorker implements Role {
 
         String sysPrompt = readFile("/prompts/dev-flow.txt");
         String devFLowJson = chat(sysPrompt, json);
+
         devFLowJson = FileUtils.jsonExtract(devFLowJson);
         workLog.writeLog("dev-flow.txt", devFLowJson);
 
@@ -53,6 +54,9 @@ public class SoftwareArchitect extends AIWorker implements Role {
          */
         sysPrompt = readFile("/prompts/api-design.txt");
         String apiStandardJson = chat(sysPrompt, json);
+
+
+
         apiStandardJson = FileUtils.jsonExtract(apiStandardJson);
         workLog.writeLog("api-design.txt", apiStandardJson);
 

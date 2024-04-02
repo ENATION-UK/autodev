@@ -16,7 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.alibaba.dashscope.aigc.generation.Generation;
+import com.alibaba.dashscope.aigc.generation.GenerationResult;
+import com.alibaba.dashscope.aigc.generation.models.QwenParam;
+import com.alibaba.dashscope.common.Message;
+import com.alibaba.dashscope.common.MessageManager;
+import com.alibaba.dashscope.common.Role;
+import com.alibaba.dashscope.exception.ApiException;
+import com.alibaba.dashscope.exception.InputRequiredException;
+import com.alibaba.dashscope.exception.NoApiKeyException;
 /**
  * @author kingapex
  * @version 1.0
@@ -29,9 +37,11 @@ public class AIWorker {
 
     @Autowired
     protected WorkLog workLog;
-
+   
 
     public AIWorker() {
+
+
         model = OpenAiChatModel.builder()
                 .apiKey(Settings.apiKey)// Please use your own OpenAI API key
                 .modelName("gpt-4-turbo-preview")
@@ -64,5 +74,43 @@ public class AIWorker {
         return answer;
     }
 
+
+    protected    String  chataliyun(String sysPrompt, String userIdea)
+    {
+        System.out.println("======================sysPrompt : ======================\n\n" + sysPrompt);
+        System.out.println("======================userMessage : ======================\n\n " + userIdea);
+
+
+        MessageManager msgManager = new MessageManager(10);
+        Message systemMsg =
+                Message.builder().role(Role.SYSTEM.getValue()).content(sysPrompt).build();
+        Message userMsg = Message.builder().role(Role.USER.getValue()).content(userIdea).build();
+
+        msgManager.add(systemMsg);
+        msgManager.add(userMsg);
+        QwenParam param =
+                QwenParam.builder().apiKey("sk-kkkkk").model("baichuan2-7b-chat-v1").messages(msgManager.get())
+                        .resultFormat(QwenParam.ResultFormat.MESSAGE)
+                        .temperature(0.1f)
+                        .build();
+        GenerationResult result = null;
+        try {
+            Generation  gen = new Generation();;
+            result = gen.call(param);
+        } catch (NoApiKeyException e) {
+            throw new RuntimeException(e);
+        } catch (InputRequiredException e) {
+            throw new RuntimeException(e);
+        }
+        Integer inputTokens = result.getUsage().getInputTokens();
+        Integer outputTokens = result.getUsage().getOutputTokens();
+        Integer total= inputTokens + outputTokens;
+        WorkFlowContext.sumTokenTotal(total);
+        System.out.println("=======================response======================");
+        String content = result.getOutput().getChoices().get(0).getMessage().getContent();
+        System.out.println(content);
+        return content;
+
+    }
 
 }

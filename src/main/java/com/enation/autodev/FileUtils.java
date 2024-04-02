@@ -68,7 +68,8 @@ public class FileUtils {
         if (m.find()) {
           return m.group(1);
         } else {
-            throw  new AIResAnalyzingException("Json Extract error",str);
+//            throw  new AIResAnalyzingException("Json Extract error",str);
+            return str;
         }
     }
 

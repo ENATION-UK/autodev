@@ -1,0 +1,27 @@
+[
+    {
+        "moduleName": "商品管理",
+        "ddl": "CREATE TABLE `products` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `name` VARCHAR(255) NOT NULL,\n  `description` TEXT,\n  `category_id` INT,\n  `stock` INT DEFAULT 0,\n  FOREIGN KEY (`category_id`) REFERENCES categories(`id`) ON DELETE SET NULL\n);\nCREATE TABLE `categories` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `name` VARCHAR(255) NOT NULL\n);",
+        "description": "## 商品表（products）：存储商品信息，与分类表（categories）通过外键关联。\n## 分类表（categories）：存储商品分类"
+    },
+    {
+        "moduleName": "订单处理",
+        "ddl": "CREATE TABLE `orders` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `user_id` INT,\n  `status` ENUM('created', 'confirmed', 'paid', 'shipped', 'completed', 'canceled') DEFAULT 'created',\n  FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE\n);\nCREATE TABLE `order_items` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `order_id` INT,\n  `product_id` INT,\n  `quantity` INT,\n  FOREIGN KEY (`order_id`) REFERENCES orders(`id`) ON DELETE CASCADE,\n  FOREIGN KEY (`product_id`) REFERENCES products(`id`) ON DELETE CASCADE\n);",
+        "description": "## 订单表（orders）：存储订单信息，与用户表（users）通过外键关联。\n## 订单详情表（order_items）：存储订单中的商品信息，与订单表（orders）和商品表（products）通过外键关联"
+    },
+    {
+        "moduleName": "用户管理",
+        "ddl": "CREATE TABLE `users` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `username` VARCHAR(255) UNIQUE NOT NULL,\n  `password` VARCHAR(255) NOT NULL,\n  `email` VARCHAR(255) UNIQUE,\n  `reset_token` VARCHAR(255),\n  `reset_expiration` DATETIME,\n  `profile` TEXT\n);\nCREATE TABLE `favorites` (\n  `user_id` INT,\n  `product_id` INT,\n  PRIMARY KEY (`user_id`, `product_id`),\n  FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE,\n  FOREIGN KEY (`product_id`) REFERENCES products(`id`) ON DELETE CASCADE\n);\nCREATE TABLE `reviews` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `user_id` INT,\n  `product_id` INT,\n  `content` TEXT,\n  FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE,\n  FOREIGN KEY (`product_id`) REFERENCES products(`id`) ON DELETE CASCADE\n);\nCREATE TABLE `purchase_history` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `user_id` INT,\n  `product_id` INT,\n  `quantity` INT,\n  FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE,\n  FOREIGN KEY (`product_id`) REFERENCES products(`id`) ON DELETE CASCADE\n);",
+        "description": "## 用户表（users）：存储用户信息，包括用户名、密码、邮箱等。\n## 收藏表（favorites）：存储用户收藏的商品，与用户表（users）和商品表（products）通过外键关联。\n## 评价表（reviews）：存储用户对商品的评价，与用户表（users）和商品表（products）通过外键关联。\n## 购物历史表（purchase_history）：存储用户的购物历史，与用户表（users）和商品表（products）通过外键关联"
+    },
+    {
+        "moduleName": "支付",
+        "ddl": "CREATE TABLE `payments` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `order_id` INT,\n  `status` ENUM('pending', 'success', 'failed') DEFAULT 'pending',\n  `payment_method` ENUM('credit_card', 'paypal', 'other') NOT NULL,\n  FOREIGN KEY (`order_id`) REFERENCES orders(`id`) ON DELETE CASCADE\n);",
+        "description": "## 支付表（payments）：存储订单的支付信息，与订单表（orders）通过外键关联"
+    },
+    {
+        "moduleName": "营销",
+        "ddl": "CREATE TABLE `coupons` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `code` VARCHAR(255) UNIQUE NOT NULL,\n  `discount` DECIMAL(5,2) NOT NULL,\n  `start_date` DATE,\n  `end_date` DATE\n);\nCREATE TABLE `points` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `user_id` INT,\n  `earned` INT DEFAULT 0,\n  `spent` INT DEFAULT 0,\n  FOREIGN KEY (`user_id`) REFERENCES users(`id`) ON DELETE CASCADE\n);\nCREATE TABLE `promotions` (\n  `id` INT AUTO_INCREMENT PRIMARY KEY,\n  `name` VARCHAR(255) NOT NULL,\n  `description` TEXT\n);",
+        "description": "## 优惠券表（coupons）：存储优惠券信息。\n## 积分表（points）：存储用户的积分信息，与用户表（users）通过外键关联。\n## 促销活动表（promotions）：存储促销活动信息"
+    }
+]

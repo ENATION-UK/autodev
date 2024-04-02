@@ -31,25 +31,17 @@ public class DatabaseDesign extends AIWorker implements Role {
     @Override
     public void run() throws AIResAnalyzingException {
         String sysPrompt = readFile("/prompts/database-design.txt");
-        SystemMessage systemMessage = SystemMessage.from(sysPrompt);
 
-        Requirement requirement = WorkFlowContext.getTask(TaskType.RequirementAnalysis);
+        Requirement requirement = WorkFlowContext.getResult(TaskType.RequirementAnalysis);
 
         Gson gson = new Gson();
         String moduleJson = gson.toJson(requirement.getModules());
         System.out.println(moduleJson);
 
-        UserMessage userMessage = UserMessage.from(   moduleJson  );
 
-        List<ChatMessage> messageList = new ArrayList<>();
-        messageList.add(systemMessage);
-        messageList.add(userMessage);
+        String text = chat(sysPrompt, moduleJson);
 
-        Response<AiMessage> response = model.generate(messageList);
-
-        String text = response.content().text();
-
-        workLog.writeLog("database-design.txt", text);
+//        workLog.writeLog("database-design.txt", text);
 
         text = FileUtils.jsonExtract(text);
 

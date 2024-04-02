@@ -1,4 +1,4 @@
-package com.enation.autodev.impl;
+package com.enation.autodev;
 
 import com.enation.autodev.Settings;
 import dev.langchain4j.agent.tool.Tool;

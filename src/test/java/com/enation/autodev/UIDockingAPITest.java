@@ -22,12 +22,6 @@ public class UIDockingAPITest {
 
     @Test
     public void test() throws AIResAnalyzingException {
-        String prompt = readFile("/response/ddl-json.txt");
-        prompt = FileUtils.jsonExtract(prompt);
-        Gson gson = new Gson();
-        Type personListType = new TypeToken<List<DatabaseStructure>>(){}.getType();
-        List<DatabaseStructure> databaseStructure = gson.fromJson(prompt, personListType);
-        WorkFlowContext.putResult(TaskType.DatabaseDesign, databaseStructure);
 
 
 

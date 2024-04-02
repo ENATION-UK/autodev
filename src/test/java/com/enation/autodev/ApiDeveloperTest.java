@@ -32,7 +32,9 @@ public class ApiDeveloperTest {
     @Autowired
     private SourceMerge sourceMerge;
 
-    public void mock() {
+    public void mock() throws AIResAnalyzingException {
+        Mocker.mockDatabaseDesign();
+
         String devFlowText = readFile("/response/dev-flow.txt");
 
         Type listType = new TypeToken<List<FunctionPoint>>(){}.getType();

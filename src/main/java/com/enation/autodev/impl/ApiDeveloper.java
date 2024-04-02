@@ -1,15 +1,15 @@
 package com.enation.autodev.impl;
 
 import com.enation.autodev.*;
-import com.enation.autodev.domain.ApiArchitecture;
-import com.enation.autodev.domain.ApiStandard;
-import com.enation.autodev.domain.FunctionPoint;
-import com.enation.autodev.domain.SourceCode;
+import com.enation.autodev.domain.*;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +44,22 @@ public class ApiDeveloper extends AIWorker implements Role {
         sourceMerge.run();
     }
 
+    /**
+     * 项目初始化
+     */
+
+    private void projectInit() {
+        URL url = this.getClass().getClassLoader().getResource("project-template/springboot");
+
+        File srcDir = new File(url.getPath());
+        File destDir = new File(Settings.workingDir+"/api/project");
+        try {
+            org.apache.commons.io.FileUtils.copyDirectory(srcDir, destDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void dev(String module, String function, ApiArchitecture apiArchitecture, List<SourceCode> apiCodeList) throws AIResAnalyzingException {
 
         String apiStandard = findModuleStandard(module, apiArchitecture);
@@ -51,6 +67,10 @@ public class ApiDeveloper extends AIWorker implements Role {
         String sysPrompt = readFile("/prompts/api-dev.txt");
 
         sysPrompt = sysPrompt.replaceAll("#api-standard#", apiStandard);
+
+        String ddl = convertDll();
+        sysPrompt = sysPrompt.replaceAll("#all-dll#", ddl);
+
 
         String userPrompt = module + "的" + function + "功能";
         String result = chat(sysPrompt, userPrompt);
@@ -61,7 +81,17 @@ public class ApiDeveloper extends AIWorker implements Role {
         List<SourceCode> sourceCodeList = convertSource(result);
         apiCodeList.addAll(sourceCodeList);
 
+    }
 
+
+    private String convertDll() {
+        List<DatabaseStructure>   databaseStructures = WorkFlowContext.getResult(TaskType.DatabaseDesign);
+        String ddl = "";
+        for (DatabaseStructure databaseStructure : databaseStructures) {
+            ddl+="\n"+databaseStructure.getModuleName()+"\n```"+databaseStructure.getDdl()+"\n```\n"+databaseStructure.getDescription()+"\n";
+        }
+
+        return ddl;
     }
 
     private   List<SourceCode> convertSource(String source) {

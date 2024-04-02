@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.enation.autodev.FileUtils.readFile;
@@ -30,17 +31,9 @@ public class DBDesignTest {
     @Test
     public void test2() throws AIResAnalyzingException {
 
-        WorkFlowContext.putTask(TaskType.UserIdea,"我想开发一款电子商务系统");
 
-        String prompt = readFile("/response/req-sort-out.txt");
-        prompt = FileUtils.jsonExtract(prompt);
-        Gson gson = new Gson();
-        Requirement requirement = gson.fromJson(prompt, Requirement.class);
-
-
-        WorkFlowContext.putTask(TaskType.RequirementAnalysis,requirement);
         databaseDesign.run();
-        DatabaseStructure result = WorkFlowContext.getResult(TaskType.DatabaseDesign);
+        List<DatabaseStructure>   result = WorkFlowContext.getResult(TaskType.DatabaseDesign);
         System.out.println(result);
 
     }

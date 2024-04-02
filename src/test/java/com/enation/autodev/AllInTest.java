@@ -38,11 +38,12 @@ public class AllInTest {
     @Test
     public void test() throws AIResAnalyzingException {
 
-        WorkFlowContext.putTask(TaskType.UserIdea,"我想开发一款blog");
-        List<Role> roles = Arrays.asList(requirementsAnalyst,softwareArchitect,apiDeveloper,uiDeveloper);
+        WorkFlowContext.putTask(TaskType.UserIdea,"我想开发个电子商城系统");
+        List<Role> roles = Arrays.asList(requirementsAnalyst,databaseDesign,softwareArchitect,apiDeveloper,uiDeveloper);
 
         for (Role role : roles) {
             role.run();
+            System.out.println("已消耗token: "+WorkFlowContext.getTokenTotal());
         }
 
     }

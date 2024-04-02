@@ -7,7 +7,7 @@ package com.enation.autodev;
  * @since 7.3.0
  **/
 public class Settings {
-    public static final String apiKey = "";
+    public static final String apiKey = "your-key";
     public static final String workingDir = "/Users/wangfeng/Downloads/response";
 
 }
